@@ -16,6 +16,7 @@
 
 package lk.ac.mrt.cse.dbs.simpleexpensemanager.ui;
 
+import android.util.Log;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -25,6 +26,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,15 +54,20 @@ public class ExpenseLogsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View rootView = inflater.inflate(R.layout.fragment_expense_logs, container, false);
         TableLayout logsTableLayout = (TableLayout) rootView.findViewById(R.id.logs_table);
         TableRow tableRowHeader = (TableRow) rootView.findViewById(R.id.logs_table_header);
 
         currentExpenseManager = (ExpenseManager) getArguments().get(EXPENSE_MANAGER);
         List<Transaction> transactionList = new ArrayList<>();
-        if (currentExpenseManager != null) {
-            transactionList = currentExpenseManager.getTransactionLogs();
+        try {
+            if (currentExpenseManager != null) {
+                transactionList = currentExpenseManager.getTransactionLogs();
+            }
+        }catch(ParseException ex){
+            Log.v("Myfirst","Activity");
+
         }
         generateTransactionsTable(rootView, logsTableLayout, transactionList);
         return rootView;
