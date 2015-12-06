@@ -26,11 +26,12 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
-import lk.ac.mrt.cse.dbs.simpleexpensemanager.App;
+
 import lk.ac.mrt.cse.dbs.simpleexpensemanager.R;
 import lk.ac.mrt.cse.dbs.simpleexpensemanager.control.ExpenseManager;
 import lk.ac.mrt.cse.dbs.simpleexpensemanager.control.InMemoryDemoExpenseManager;
 import lk.ac.mrt.cse.dbs.simpleexpensemanager.control.PersistantDemoExpenseManager;
+import lk.ac.mrt.cse.dbs.simpleexpensemanager.control.exception.ExpenseManagerException;
 
 public class MainActivity extends AppCompatActivity {
     private ExpenseManager expenseManager;
@@ -67,10 +68,13 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-        App.setContext(this);
 
         /***  Begin generating dummy data for Persistant-Memory implementation  ***/
-        expenseManager = new PersistantDemoExpenseManager();
+        try {
+            expenseManager = new PersistantDemoExpenseManager();
+        } catch (ExpenseManagerException e) {
+            e.printStackTrace();
+        }
         /*** END ***/
     }
 
